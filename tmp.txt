@@ -1,0 +1,57 @@
+import * as THREE from 'three';
+import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
+
+//Szene + Kamera
+const myscene = new THREE.Scene();
+myscene.background = new THREE.Color( 0xffffff );
+const camera = new THREE.PerspectiveCamera( 50, window.innerWidth / window.innerHeight, 0.1, 1000 );
+camera.position.z = 5;
+
+//Renderer
+const renderer = new THREE.WebGLRenderer({antialias: true});
+renderer.setSize( window.innerWidth, window.innerHeight );
+renderer.setAnimationLoop( animate );
+document.body.appendChild( renderer.domElement );
+
+const controls = new OrbitControls( camera, renderer.domElement );
+
+//Meshes
+const geometry = new THREE.BoxGeometry( 1, 1, 1 );        //BoxGeometry( 1, 1, 1 )  SphereGeometry( 1, 24, 16 )
+const material = new THREE.MeshToonMaterial( { color: 0xff0000 } );    //MeshBasicMaterial( { color: 0x4b34e0 } );
+const cube = new THREE.Mesh( geometry, material );
+//myscene.add( cube );
+
+const mysphereGeom = new THREE.SphereGeometry( 1, 24, 16 );
+const mysphere = new THREE.Mesh ( mysphereGeom, material);
+//myscene.add (mysphere)
+
+const mycapsGeom = new THREE.CapsuleGeometry (1, 1, 4, 8);
+const mycaps = new THREE.Mesh (mycapsGeom, material);
+myscene.add( mycaps );
+
+//Licht
+const myLight = new THREE.DirectionalLight (0xffffff, 1);
+myLight.position.set( 10, 10, 10 );
+myscene.add (myLight);
+
+//Animation
+function animate() {
+
+	cube.rotation.x += 0.01;
+	cube.rotation.y += 0.01;
+
+    mysphere.rotation.x += 0.01;
+	mysphere.rotation.y += 0.01;
+
+    mycaps.rotation.x += 0.01;
+	mycaps.rotation.y += 0.01;
+
+    
+	renderer.render( myscene, camera );
+
+}
+
+function onresize(){
+    console.log("resize");
+}
+window.addEventListener("resize", onresize);
